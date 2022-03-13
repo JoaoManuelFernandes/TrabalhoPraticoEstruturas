@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="StructFile.c" />
     <ClCompile Include="TP_Estruturas.c" />
   </ItemGroup>
   <ItemGroup>
