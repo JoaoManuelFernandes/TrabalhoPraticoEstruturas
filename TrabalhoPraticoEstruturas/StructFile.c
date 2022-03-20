@@ -29,6 +29,11 @@ int MainFunction()
 
 }
 
+int quantidadeObjetos(Operation* obj)
+{
+    if (obj != NULL) return(1 + quantidadeObjetos(obj->next)); //recursiva exemplo do stor
+    else return(0);
+}
 
 struct Job* CreateJob(Operation* newop,int * op,int *index)
 {
@@ -85,6 +90,7 @@ struct Job* CreateJob(Operation* newop,int * op,int *index)
 
 void CheckOperations(Operation* newjob)
 {
+    int qt = quantidadeObjetos(newjob);
     while (newjob != NULL)
     {
      
@@ -95,6 +101,8 @@ void CheckOperations(Operation* newjob)
         printf("%p\n", newjob->next);
         newjob = newjob->next;
     }
+
+    printf("Quantidade de listas = %d\n", qt );
 }
 
 bool SaveStructToFile(Operation* newjob)
@@ -146,14 +154,22 @@ struct Job* ReadStructFromFile(Operation* newjob_fromfile)
         FileToWrite = fopen("EstruturaDeDadosFile.csv", "r"); // r Open for both reading .
         int reset = 0;
         int *NumberOfAtualOperation = &reset;
-        for(int i = 0 ; i<3 ; i++){//um pouco estático porque nao sei o numero de elementos do array...
-            newjob = AuxCreateStruct(&MachinesPerOp[i], FileToWrite, newjob_fromfile,i+1, NumberOfAtualOperation);
+        for(int i = 0 ; i<4 ; i++){//um pouco estático porque nao sei o numero de elementos do array...
+             if (i == 1) {
+                reset = 0;
+            }
+            
+            newjob = AuxCreateStruct(&MachinesPerOp[reset], FileToWrite, newjob_fromfile,i+1, NumberOfAtualOperation);
             if(i!=0){
-            NumberOfAtualOperation = &newjob->operation;
-            newjob_fromfile = newjob;
+                NumberOfAtualOperation = &newjob->operation;
+                newjob_fromfile = newjob;
             }   
+            reset++;
+
         }
      fclose(FileToWrite);
+     system("cls");
+     CheckOperations(newjob);
  }
     
     return True;
@@ -235,6 +251,7 @@ struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_
     char* stdToCompare = (char*)malloc(sizeof(char));
     int getmachines, getcycletime, count_string_space = 0, count_index = 0;
     int Number_Lines = Number_Line;// nr de linhas lidas
+   long int var_currenteOp=-1;
 
     if (newjob != NULL) {
 
@@ -267,22 +284,30 @@ struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_
                             }
                     }
                 //}
-                //else if (NumberOfAtualOperation == atoi(stdToCompare) && Number_Lines != 1) {
-                //        count_string_space++;
-                //        if (count_string_space == 1) {
-                //            newjob->operation = atoi(stdToCompare);
-                //        }/*
-                //        for (int i = 0; i < newjob->operation; i++) {*/
-                //        if (count_string_space == 2) {
-                //            newjob->machine[Number_Lines-2] = atoi(stdToCompare);
-                //        }
-                //        if (count_string_space == 3) {
-                //            newjob->cycletime[Number_Lines - 2] = atoi(stdToCompare);
-                //            count_string_space = 1;
-                //        }
-                //        //}
-                //}
-                else if (*NumberOfAtualOperation != atoi(stdToCompare) && Number_Lines != 1 ) {
+                else if (*NumberOfAtualOperation == var_currenteOp && Number_Lines != 1 ) {
+
+                        count_string_space++;
+                        if (count_string_space == 1) {
+                            int aux = atoi(stdToCompare);
+                            NumberOfAtualOperation = &aux;
+                            newjob->operation = *NumberOfAtualOperation;
+                            newjob->numberofmachines = *Machines;
+                        }/*
+                        for (int i = 0; i < newjob->operation; i++) {*/
+                        if (count_string_space == 2) {
+                            int aux = atoi(stdToCompare);
+                            count_index++;
+                            newjob->machine[count_index] = aux;
+                        }
+                        //if (count_string_space == 3) {
+                        //    newjob->cycletime[count_index] = atoi(stdToCompare);
+                        //    count_string_space = 1;
+                        //}
+                        //}
+                }
+                else if (*NumberOfAtualOperation != var_currenteOp && Number_Lines != 1 ) {
+
+                        
                         count_string_space++;
                         if (count_string_space == 1) {
                             int aux = atoi(stdToCompare);
@@ -294,28 +319,36 @@ struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_
                         if (count_string_space == 2) {
                             int aux = atoi(stdToCompare);
                             newjob->machine[count_index] = aux;
+                            var_currenteOp = *NumberOfAtualOperation;
                         }
-                        if (count_string_space == 3) {
-                            int aux = atoi(stdToCompare);
-                            newjob->cycletime[count_index] = aux;
-                            count_string_space = 1;
-                        }
+                        //if (count_string_space == 3) {
+                        //    int aux = atoi(stdToCompare);
+                        //    newjob->cycletime[count_index] = aux;
+                        //    count_string_space = 1;
+                        //}
                 }
                 }
                 else if( strstr(stdToCompare, "\n") != NULL && Number_Lines!=1){
                  stdToCompare = strtok(stdToCompare, "\n");
                  int aux = atoi(stdToCompare);
                  newjob->cycletime[count_index] = aux;
-                 count_string_space = 1;
+                 count_string_space = 0;
                  newjob->next = newjob_fromfile;
                 }
-                           
+                else {
+                    return newjob;
+                }
                 printf("%s;", pch);
                 pch = strtok(NULL, ";");
              
             }
+            //if (Number_Lines == 1 ) {
+            //    Number_Lines++;
+            //    return newjob;
+            //}
             Number_Lines++;
-            if (Number_Lines!=1) {
+            i--;
+            if (Number_Lines!=1 && i == 0) {
                 return newjob;
             }
         }

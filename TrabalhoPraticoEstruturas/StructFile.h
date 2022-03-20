@@ -20,6 +20,7 @@ typedef struct Job
 typedef enum { False, True } bool;
 
 int MainFunction();
+int quantidadeObjetos(Operation* obj);
 struct Job* CreateJob(Operation* newjob, int* op, int* index);
 void CheckOperations(Operation* newjob);
 
