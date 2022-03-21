@@ -4,7 +4,7 @@
 int MainFunction()
 {
     int optionselected;
-    setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
+    //setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
 
     printf("\nM E N U\n");
     printf("\nPor favor selecione qual operação pretendida\n");
@@ -41,13 +41,7 @@ struct Job* CreateJob(Operation* newop,int * op,int *index)
     Operation* newjob = (Operation*)malloc(sizeof(Operation));
 
     if (newjob != NULL) {
-
-        /*int* operation, * machine, * cycletime;*/
         int getmachines, getcycletime;
-        //machine = malloc(*op * sizeof(int));
-        //cycletime = malloc(*op * sizeof(int));
-
-
         const size_t MachinesPerOp;
 
         printf("Quantas máquinas terá a operação %d ?\n", *index + 1);
@@ -60,7 +54,6 @@ struct Job* CreateJob(Operation* newop,int * op,int *index)
         int h = *index + 1;
         newjob->operation = h;
 
-
         for (int x = 0; x < MachinesPerOp; x++) {
 
                 printf("Qual a máquina associada %d ?\n", x + 1);
@@ -70,22 +63,83 @@ struct Job* CreateJob(Operation* newop,int * op,int *index)
                 printf("Qual o tempo de ciclo %d ?\n", x + 1);
                 scanf("%d", &getcycletime);
                 newjob->cycletime[x] = getcycletime;
-
                 newjob->next = newop;
-
             }
-
-
 
         printf("Processo foi criado com sucesso!\n");
         return newjob;
     }
-
     else {
         printf("Alocação de um novo processo falhou!!\n");
         return NULL;
+    }
+}
+
+struct Job* RemoveAList(Operation* newjob, int pos)
+{
+    Operation* atual = newjob, * proximo = newjob;
+
+        if (newjob == NULL) return(newjob);
+        else if (pos == 0) {
+            newjob = atual->next;
+            free(atual);
+            return newjob;
+        }
+
+        else {
+            // encontrar o no que se pretende apagar
+            for (int i = 0; atual != NULL && i < pos - 1; i++)
+                atual = atual->next;
+
+            // se a variavel pos for maior que o numero de nodes existentes
+            if (atual == NULL || atual->next == NULL){
+
+                system("cls");
+                setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
+                printf("Posição excede numero de operações disponiveis.\n");
+                return newjob ;
+            }
+
+            // O node atual->next é o que vai ser apagado
+            // Apontadr para o proximo node do que foi apagado
+            proximo = atual->next->next;
+
+            // Unlink the node from linked list
+            free(atual->next); // Free memory
+
+            // Unlink the deleted node from list
+            atual->next = proximo;
+            return(newjob);
+
+        }
+        
+
+}
+
+struct Job* ModifyAListMachine(Operation* newjob, int* operation, int* newmachine, int pos)
+{
+    while (newjob !=NULL) {
+
+        if (newjob->operation != operation) { newjob = newjob->next; continue;}
+        else {
+            newjob->machine[pos] = *newmachine;
+        }
 
     }
+    return newjob;
+}
+
+struct Job* ModifyAListCycleTime(Operation* newjob, int* operation, int* cycletime, int pos)
+{
+    while (newjob != NULL) {
+
+        if (newjob->operation != operation) { newjob = newjob->next; continue; }
+        else {
+            newjob->machine[pos] = *cycletime;
+        }
+
+    }
+    return newjob;
 }
 
 void CheckOperations(Operation* newjob)
@@ -172,7 +226,7 @@ struct Job* ReadStructFromFile(Operation* newjob_fromfile)
      CheckOperations(newjob);
  }
     
-    return True;
+    return newjob;
 }
 
 int* AuxReadFile(FILE* FileToWrite)
