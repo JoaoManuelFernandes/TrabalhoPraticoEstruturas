@@ -35,7 +35,7 @@ int quantidadeObjetos(Operation* obj)
     else return(0);
 }
 
-struct Job* CreateJob(Operation* newop,int * op,int *index)
+struct Job* CreateJobOnInit(Operation* newop,int * op,int *index)
 {
     //struct Job* newjob = NULL;
     Operation* newjob = (Operation*)malloc(sizeof(Operation));
@@ -75,6 +75,53 @@ struct Job* CreateJob(Operation* newop,int * op,int *index)
     }
 }
 
+struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
+{
+    Operation* aux = newjob, * novo = (Operation*)malloc(sizeof(Operation));
+    if (novo != NULL)
+    {
+        if (aux == NULL) return(CreateJobOnInit(aux, op,index));
+        else {
+
+            while (aux->next != NULL)
+            aux = aux->next;
+
+
+
+            int getmachines, getcycletime;
+            const size_t MachinesPerOp;
+
+            printf("Quantas máquinas terá a operação %d ?\n", *index + 1);
+            scanf("%d", &MachinesPerOp);
+            //int* arrayexample=(int*)malloc(sizeof(int)* MachinesPerOp);
+            novo->machine = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+            novo->cycletime = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+            novo->operation = (int*)malloc(1 * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+            novo->numberofmachines = MachinesPerOp;
+            int h = *index + 1;
+            novo->operation = h;
+
+            for (int x = 0; x < MachinesPerOp; x++) {
+
+                printf("Qual a máquina associada %d ?\n", x + 1);
+                scanf("%d", &getmachines);
+                novo->machine[x] = getmachines;
+
+                printf("Qual o tempo de ciclo %d ?\n", x + 1);
+                scanf("%d", &getcycletime);
+                novo->cycletime[x] = getcycletime;
+               
+            }
+
+            novo->next = NULL;
+            aux->next = novo;
+            return(newjob);
+        
+        }
+    }
+    else return(newjob);
+}
+
 struct Job* RemoveAList(Operation* newjob, int pos)
 {
     Operation* atual = newjob, * proximo = newjob;
@@ -97,6 +144,7 @@ struct Job* RemoveAList(Operation* newjob, int pos)
                 system("cls");
                 setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
                 printf("Posição excede numero de operações disponiveis.\n");
+               
                 return newjob ;
             }
 
@@ -142,13 +190,37 @@ struct Job* ModifyAListCycleTime(Operation* newjob, int* operation, int* cycleti
     return newjob;
 }
 
+struct Job* InvertStruct(Operation* newjob)
+{
+  
+        // Initialize current, previous and
+        // next pointers
+    Operation* current = newjob,* prev = NULL, * next = NULL;
+
+        while (current != NULL) {
+            // Store next
+            next = current->next;
+
+            // Reverse current node's pointer
+            current->next = prev;
+
+            // Move pointers one position ahead.
+            prev = current;
+            current = next;
+        }
+        newjob = prev;
+
+        return newjob;
+}
+
+
 void CheckOperations(Operation* newjob)
 {
     int qt = quantidadeObjetos(newjob);
     while (newjob != NULL)
     {
      
-        for (int i = 0; i < newjob->numberofmachines; i++)//está estatistico!!
+        for (int i = 0; i < newjob->numberofmachines; i++)
         {
             printf("%p %d %d %d\n", newjob, newjob->operation, newjob->machine[i], newjob->cycletime[i]);
         }
@@ -201,7 +273,8 @@ struct Job* ReadStructFromFile(Operation* newjob_fromfile)
     }
     Operation* newjob = (Operation*)malloc(sizeof(Operation));
 
-    if (newjob != NULL) {
+    if (newjob != NULL ) {
+
         int* MachinesPerOp = (int*)malloc(sizeof(int));
         MachinesPerOp = AuxReadFile(FileToWrite);
 
@@ -211,6 +284,7 @@ struct Job* ReadStructFromFile(Operation* newjob_fromfile)
         for(int i = 0 ; i<4 ; i++){//um pouco estático porque nao sei o numero de elementos do array...
              if (i == 1) {
                 reset = 0;
+                newjob = NULL;
             }
             
             newjob = AuxCreateStruct(&MachinesPerOp[reset], FileToWrite, newjob_fromfile,i+1, NumberOfAtualOperation);
@@ -223,6 +297,7 @@ struct Job* ReadStructFromFile(Operation* newjob_fromfile)
         }
      fclose(FileToWrite);
      system("cls");
+     newjob =  InvertStruct(newjob);
      CheckOperations(newjob);
  }
     
@@ -298,7 +373,7 @@ int* AuxReadFile(FILE* FileToWrite)
 
 struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_fromfile,int Number_Line, int* NumberOfAtualOperation)
 {
-    Operation* newjob = (Operation*)malloc(sizeof(Operation));
+    Operation*aux = newjob_fromfile, *newjob = (Operation*)malloc(sizeof(Operation));
     int i = *Machines;
     const size_t line_size = 75; // Limita o nr de caracteres a 75!
     char* line = malloc(line_size);// cria variavel dinamica com o tamanho que dimensionamos para o nr de caracteres a ler!
@@ -327,8 +402,9 @@ struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_
                     if (Number_Lines == 2 ){
                         count_string_space++;
                         if (count_string_space == 1) {
-                            NumberOfAtualOperation = atoi(stdToCompare);
-                            newjob->operation = NumberOfAtualOperation;
+                            int aux = atoi(stdToCompare);
+                            NumberOfAtualOperation = &aux;
+                            newjob->operation = *NumberOfAtualOperation;
                             newjob->numberofmachines = *Machines;
                         }/*
                         for (int i = 0; i < newjob->operation; i++) {*/
@@ -388,6 +464,7 @@ struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_
                  newjob->cycletime[count_index] = aux;
                  count_string_space = 0;
                  newjob->next = newjob_fromfile;
+                 var_currenteOp = *NumberOfAtualOperation;
                 }
                 else {
                     return newjob;

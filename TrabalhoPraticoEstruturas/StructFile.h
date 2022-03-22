@@ -21,10 +21,12 @@ typedef enum { False, True } bool;
 
 int MainFunction();
 int quantidadeObjetos(Operation* obj);
-struct Job* CreateJob(Operation* newjob, int* op, int* index);
+struct Job* CreateJobOnInit(Operation* newjob, int* op, int* index);
+struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index);
 struct Job* RemoveAList(Operation* newjob , int pos);
 struct Job* ModifyAListMachine(Operation* newjob, int *operation,int *machine, int pos);
 struct Job* ModifyAListCycleTime(Operation* newjob, int* operation, int* cycletime, int pos);
+struct Job* InvertStruct(Operation* newjob);
 void CheckOperations(Operation* newjob);
 
 bool SaveStructToFile(Operation* newjob);

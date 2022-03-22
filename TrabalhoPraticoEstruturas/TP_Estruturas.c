@@ -30,7 +30,7 @@ int main() {
                         int* index;
                         for(int i=0 ;i<*op;i++){
                              index = &i;
-                             newjob = CreateJob(newjob, op, index);
+                             newjob = CreateJobOnEnd(newjob, op, index);
                              if (newjob == NULL) {
                                printf("Não criou uma nova operaçãoo , repetir ? Presse 1 para tal! \n");
 
@@ -43,21 +43,25 @@ int main() {
                 case 2:
                     while (optionselected == 2)
                     {
-                        //system("cls");
-                       
+                        system("cls");
+                      
+                        
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+                        //CheckOperations(newjob_fromfile);
+                        int qt = quantidadeObjetos(newjob_fromfile);
+
                         printf("Qual a operação que deseja eliminar?\n");
                         int aux;
                         scanf("%d", &aux);
-                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
-                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
-                        int qt = quantidadeObjetos(newjob_fromfile);
+
                         newjob_fromfile = RemoveAList(newjob_fromfile, aux);
                         int qt_aux = quantidadeObjetos(newjob_fromfile);
                         if (qt != qt_aux){
                             system("cls");
-                            CheckOperations(newjob_fromfile);
+                            SaveStructToFile(newjob_fromfile);
                         }
-                        optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
+                        optionselected = 9;// PARA GUARDAR JÁ COM A LISTA REMOVIDA!
                         
                     }
                 case 3:
