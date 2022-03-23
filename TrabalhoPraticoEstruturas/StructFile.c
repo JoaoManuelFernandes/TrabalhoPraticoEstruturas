@@ -13,9 +13,10 @@ int MainFunction()
     printf("3 - Alterar uma operação\n");
     printf("4 - Deteminar quantidade de tempo minimo para completar um processo\n");
     printf("5 - Deteminar quantidade de tempo máxima para completar um processo\n");
-    printf("6 - Armazenar a estrutura\n");
-    printf("7 - Carregar o operações presente no ficheiro\n");
-    printf("8 - Analisar a estrutura atual\n");
+    printf("6 - Determinar todas as combinações entre máquinas\n");
+    printf("7 - Armazenar a estrutura\n");
+    printf("8 - Carregar o operações presente no ficheiro\n");
+    printf("9 - Analisar a estrutura atual\n");
     printf("O - SAIR\n");
 
     do
@@ -167,27 +168,32 @@ struct Job* RemoveAList(Operation* newjob, int pos)
 struct Job* ModifyAListMachine(Operation* newjob, int* operation, int* newmachine, int pos)
 {
     while (newjob !=NULL) {
-
-        if (newjob->operation != operation) { newjob = newjob->next; continue;}
+   
+        if (newjob->operation != *operation) {
+            newjob = newjob->next; 
+            continue;
+        }
         else {
             newjob->machine[pos] = *newmachine;
+            return newjob;
         }
 
     }
-    return newjob;
+    return NULL;
 }
 
 struct Job* ModifyAListCycleTime(Operation* newjob, int* operation, int* cycletime, int pos)
 {
     while (newjob != NULL) {
 
-        if (newjob->operation != operation) { newjob = newjob->next; continue; }
+        if (newjob->operation != *operation) { newjob = newjob->next; continue; }
         else {
             newjob->machine[pos] = *cycletime;
+            return newjob;
         }
 
     }
-    return newjob;
+    return NULL;
 }
 
 struct Job* InvertStruct(Operation* newjob)
@@ -229,6 +235,74 @@ void CheckOperations(Operation* newjob)
     }
 
     printf("Quantidade de listas = %d\n", qt );
+}
+
+void LessTimeToComplete(Operation* newjob)
+{
+    int minor_cycle, minor_machine, lastoperation,sumcycletime=0;
+    system("cls");
+    while (newjob != NULL) {
+        
+        for(int i = 0; i < newjob->numberofmachines;i++){
+        
+            if (i == 0) {
+                minor_cycle = newjob->cycletime[i];
+                minor_machine = newjob->machine[i];
+                lastoperation = newjob->operation;
+            }
+            
+            else if (minor_cycle > newjob->cycletime[i]) {
+                minor_cycle = newjob->cycletime[i];
+                minor_machine = newjob->machine[i];
+                lastoperation = newjob->operation;
+            }
+        }
+        newjob = newjob->next;
+        sumcycletime += minor_cycle;
+
+
+        printf("Menor tempos na operação %d\n", lastoperation);
+        printf("Máquina = %d, TempoCiclo = %d\n", minor_machine, minor_cycle);
+       
+    }
+        printf("Soma do tempo minimo = %d\n", sumcycletime);
+   
+}
+
+void LargerTimeToComplete(Operation* newjob)
+{
+    int bigger_cycle, bigger_machine, lastoperation, sumcycletime = 0;
+    system("cls");
+    while (newjob != NULL) {
+
+        for (int i = 0; i < newjob->numberofmachines; i++) {
+
+            if (i == 0) {
+                bigger_cycle = newjob->cycletime[i];
+                bigger_machine = newjob->machine[i];
+                lastoperation = newjob->operation;
+            }
+
+            else if (bigger_cycle < newjob->cycletime[i]) {
+                bigger_cycle = newjob->cycletime[i];
+                bigger_machine = newjob->machine[i];
+                lastoperation = newjob->operation;
+            }
+        }
+        newjob = newjob->next;
+        sumcycletime += bigger_cycle;
+
+
+        printf("Menor tempos na operação %d\n", lastoperation);
+        printf("Máquina = %d, TempoCiclo = %d\n", bigger_machine, bigger_cycle);
+
+    }
+    printf("Soma do tempo minimo = %d\n", sumcycletime);
+
+}
+
+void AllCombinations(Operation* newjob)
+{
 }
 
 bool SaveStructToFile(Operation* newjob)

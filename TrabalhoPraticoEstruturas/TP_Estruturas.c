@@ -37,7 +37,7 @@ int main() {
                              }
                         }
                         printf("Continuar a Inserir ?\n");
-                        printf("1-Sim 9-MenuPrincipal 0-Sair \n");
+                        printf("1-Sim 10-MenuPrincipal 0-Sair \n");
                         scanf( "%d", &optionselected);
                     }
                 case 2:
@@ -61,7 +61,7 @@ int main() {
                             system("cls");
                             SaveStructToFile(newjob_fromfile);
                         }
-                        optionselected = 9;// PARA GUARDAR JÁ COM A LISTA REMOVIDA!
+                        optionselected = 10;//para ir novamente para o mainfunction e pedir a nova opera��o
                         
                     }
                 case 3:
@@ -83,50 +83,89 @@ int main() {
                             scanf("%d", &machine);
                             printf("Em que posição se encontra a máquina na lista? Veja pela estrutura!\n");
                             scanf("%d", &pos);
-                            ModifyAListMachine(newjob_fromfile, op_pointer, machine_pointer,pos);
+                            if ((machine>0 && machine<9) && (pos > 0 && pos < 9)){
+                                printf("Máquina ou posição inválida!");
+                            }
+                            else {
+                                newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, machine_pointer, pos - 1);
+                            }
                         }
                         else if (strcmp(decision, "T") == 0) {
                             printf("Qual é o novo tempo de ciclo que irá ser inserido?\n");
                             scanf("%d", &cycletime);
                             printf("Em que posição se encontra o novo tempo de ciclo  na lista? Veja pela estrutura!\n");
                             scanf("%d", &pos);
-                            ModifyAListMachine(newjob_fromfile, op_pointer, cycletime_pointer, pos);
+
+                            if ((machine > 0 && machine < 9) && (pos > 0 && pos < 9)) {
+                                printf("Máquina ou posição inválida!");
+                            }
+                            else {
+                                newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, cycletime_pointer, pos - 1);
+                            }
+                            
                          }
                         else {
                             printf("Não é uma opção válida!!");
                             optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
                             continue;
                         }
-                     CheckOperations(newjob_fromfile);
+                        if(newjob_fromfile == NULL){
+                            printf("Erro ao alterar lista!");
+                        }
+                        else {
+                            CheckOperations(newjob_fromfile);
+                        }
+                     
                     optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
                 case 4:
                     while (optionselected == 4)
                     {
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+                        LessTimeToComplete(newjob_fromfile);
+                        optionselected = 10;//para ir novamente para o mainfunction e pedir a nova opera��o
                     }
                 case 5: 
                     while (optionselected == 5)
                 {
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+                        LargerTimeToComplete(newjob_fromfile);
+                        optionselected = 10;//para ir novamente para o mainfunction e pedir a nova opera��o
+
                 }
                 case 6:
                     while (optionselected == 6)
                     {
-                        SaveStructToFile(newjob);
-                        optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+                        AllCombinations(newjob_fromfile);
+                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
                 case 7:
                     while (optionselected == 7)
                     {
-                        //CRIAR STRUCT A PARTIR DO QUE SE LE NO FICHEIRO
-                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
-                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
-                        optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
+
+                        SaveStructToFile(newjob);
+                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
+
+                       
                     }
                 case 8:
                     while (optionselected == 8)
                     {
+                        //CRIAR STRUCT A PARTIR DO QUE SE LE NO FICHEIRO
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
+                    }
+
+                case 9:
+                    while (optionselected == 9)
+                    {
                         CheckOperations(newjob);
-                        optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
+                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
                default:
 

@@ -28,6 +28,9 @@ struct Job* ModifyAListMachine(Operation* newjob, int *operation,int *machine, i
 struct Job* ModifyAListCycleTime(Operation* newjob, int* operation, int* cycletime, int pos);
 struct Job* InvertStruct(Operation* newjob);
 void CheckOperations(Operation* newjob);
+void LessTimeToComplete(Operation* newjob);
+void LargerTimeToComplete(Operation* newjob);
+void AllCombinations(Operation* newjob);
 
 bool SaveStructToFile(Operation* newjob);
 struct Job* ReadStructFromFile(Operation* newjob_fromfile);
