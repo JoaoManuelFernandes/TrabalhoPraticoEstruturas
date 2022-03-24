@@ -303,6 +303,31 @@ void LargerTimeToComplete(Operation* newjob)
 
 void AllCombinations(Operation* newjob)
 {
+
+
+
+    if (newjob != NULL) {
+
+
+        int First_Op_size, cycletime;
+        float sum_average;
+        while (newjob != NULL) {
+
+            First_Op_size = newjob->numberofmachines;
+            sum_average = 0;
+            for (int i = 0; i < First_Op_size; i++)
+            {
+                 cycletime = newjob->cycletime[i];                
+                sum_average += cycletime;
+                            
+            }
+            printf("Possibilidade %d ", newjob->operation);
+            printf("Média == %.2f\n", (sum_average/ First_Op_size));
+            newjob = newjob->next;
+        }
+    }
+    else return NULL;
+
 }
 
 bool SaveStructToFile(Operation* newjob)
