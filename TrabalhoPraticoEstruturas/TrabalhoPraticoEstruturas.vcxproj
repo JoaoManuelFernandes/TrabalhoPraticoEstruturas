@@ -140,7 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="StructFile.c" />
-    <ClCompile Include="TP_Estruturas.c" />
+    <ClCompile Include="MainFile.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StructFile.h" />

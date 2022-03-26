@@ -6,14 +6,21 @@ int MainFunction()
     int optionselected;
     //setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
 
-    printf("\nM E N U\n");
+
+    printf("\n=====================================================================================================");
+    printf("\n                                  Joao Fernandes - a14333                                          \n");
+    printf("                                  Eng. Eletrotecnica e de Computadores                               \n");
+    printf("                                  Estrutura de dados avancadas                                       \n");
+    printf("                                  TP1 - Flexible Job Shop Problem                                    \n");
+    printf("=====================================================================================================\n");
+
     printf("\nPor favor selecione qual operação pretendida\n");
     printf("1 - Insercao de uma nova operação \n");
     printf("2 - Remover uma operação\n");
     printf("3 - Alterar uma operação\n");
     printf("4 - Deteminar quantidade de tempo minimo para completar um processo\n");
     printf("5 - Deteminar quantidade de tempo máxima para completar um processo\n");
-    printf("6 - Determinar todas as combinações entre máquinas\n");
+    printf("6 - Determinar média de tempo entre máquinas da mesma operação\n");
     printf("7 - Armazenar a estrutura\n");
     printf("8 - Carregar o operações presente no ficheiro\n");
     printf("9 - Analisar a estrutura atual\n");
@@ -21,10 +28,12 @@ int MainFunction()
 
     do
     {
+        //scanf(" %[^\n]d", &optionselected);
+
         scanf(" %d", &optionselected);
         system("cls");
         //clrscr();
-    } while ((optionselected < 0) || (optionselected > 8));
+    } while ((optionselected < 0) || (optionselected > 9));
 
     return(optionselected);
 
@@ -223,18 +232,24 @@ struct Job* InvertStruct(Operation* newjob)
 void CheckOperations(Operation* newjob)
 {
     int qt = quantidadeObjetos(newjob);
-    while (newjob != NULL)
-    {
-     
-        for (int i = 0; i < newjob->numberofmachines; i++)
-        {
-            printf("%p %d %d %d\n", newjob, newjob->operation, newjob->machine[i], newjob->cycletime[i]);
-        }
-        printf("%p\n", newjob->next);
-        newjob = newjob->next;
-    }
+    if (qt == 0) { printf("ERROR\n"); printf("ERROR\n");
+    printf("Número de elementos de listas é nulo, tem de primeiro criar a nossa estrutura clicando 1!\n");
+    printf("ERROR\n"); printf("ERROR\n");}
 
-    printf("Quantidade de listas = %d\n", qt );
+    else{
+        while (newjob != NULL)
+        {
+     
+            for (int i = 0; i < newjob->numberofmachines; i++)
+            {
+                printf("%p %d %d %d\n", newjob, newjob->operation, newjob->machine[i], newjob->cycletime[i]);
+            }
+            printf("%p\n", newjob->next);
+            newjob = newjob->next;
+        }
+    
+        printf("Quantidade de listas = %d\n", qt );
+    }
 }
 
 void LessTimeToComplete(Operation* newjob)

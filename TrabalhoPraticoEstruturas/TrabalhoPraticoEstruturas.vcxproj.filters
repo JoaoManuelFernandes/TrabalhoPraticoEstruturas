@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TP_Estruturas.c">
+    <ClCompile Include="MainFile.c">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
     <ClCompile Include="StructFile.c">

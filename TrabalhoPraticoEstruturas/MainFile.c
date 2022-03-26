@@ -173,7 +173,7 @@ int main() {
                     
             }
         } while (optionselected != 0);
-        printf("Consola ir� encerrar\n");
+        printf("Consola irá encerrar\n");
         //sleep(1);
         exit(0);
 
