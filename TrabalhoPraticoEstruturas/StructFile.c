@@ -31,9 +31,9 @@ int MainFunction()
         //scanf(" %[^\n]d", &optionselected);
 
         scanf(" %d", &optionselected);
-        system("cls");
+       system("cls");
         //clrscr();
-    } while ((optionselected < 0) || (optionselected > 9));
+    } while ((optionselected <= 0) || (optionselected > 9));
 
     return(optionselected);
 
@@ -47,13 +47,14 @@ int quantidadeObjetos(Operation* obj)
 
 struct Job* CreateJobOnInit(Operation* newop,int * op,int *index)
 {
+    setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
     //struct Job* newjob = NULL;
     Operation* newjob = (Operation*)malloc(sizeof(Operation));
 
     if (newjob != NULL) {
         int getmachines, getcycletime;
         const size_t MachinesPerOp;
-
+  
         printf("Quantas máquinas terá a operação %d ?\n", *index + 1);
         scanf("%d", &MachinesPerOp);
         //int* arrayexample=(int*)malloc(sizeof(int)* MachinesPerOp);
@@ -76,17 +77,18 @@ struct Job* CreateJobOnInit(Operation* newop,int * op,int *index)
                 newjob->next = newop;
             }
 
-        printf("Processo foi criado com sucesso!\n");
+        printf("Operação criada com sucesso!\n");
         return newjob;
     }
     else {
-        printf("Alocação de um novo processo falhou!!\n");
+        printf("Alocação de uma nova operação falhou!!\n");
         return NULL;
     }
 }
 
 struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
 {
+    setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
     Operation* aux = newjob, * novo = (Operation*)malloc(sizeof(Operation));
     if (novo != NULL)
     {
@@ -237,18 +239,25 @@ void CheckOperations(Operation* newjob)
     printf("ERROR\n"); printf("ERROR\n");}
 
     else{
+        printf("%s %s %s \n", "Operação", "Máquina", "Tempo de ciclo");
         while (newjob != NULL)
         {
      
-            for (int i = 0; i < newjob->numberofmachines; i++)
+          /*  for (int i = 0; i < newjob->numberofmachines; i++)
             {
                 printf("%p %d %d %d\n", newjob, newjob->operation, newjob->machine[i], newjob->cycletime[i]);
             }
             printf("%p\n", newjob->next);
+            newjob = newjob->next;*/
+ 
+            for (int i = 0; i < newjob->numberofmachines; i++)
+            { 
+                printf("   %d        %d          %d\n", newjob->operation, newjob->machine[i], newjob->cycletime[i]);
+            }
             newjob = newjob->next;
         }
     
-        printf("Quantidade de listas = %d\n", qt );
+        printf("\nQuantidade de listas = %d\n", qt );
     }
 }
 
@@ -393,20 +402,21 @@ struct Job* ReadStructFromFile(Operation* newjob_fromfile)
         MachinesPerOp = AuxReadFile(FileToWrite);
 
         FileToWrite = fopen("EstruturaDeDadosFile.csv", "r"); // r Open for both reading .
-        int reset = 0;
-        int *NumberOfAtualOperation = &reset;
-        for(int i = 0 ; i<4 ; i++){//um pouco estático porque nao sei o numero de elementos do array...
-             if (i == 1) {
-                reset = 0;
+        int counter = 0;
+        int *NumberOfAtualOperation = &counter;
+        for(int i = 0 ; i< MachinesPerOp[0]+1; i++){//+1 porque temos a a linha do operação..
+            
+            if (i == 1) {
+                counter = 0;
                 newjob = NULL;
             }
             
-            newjob = AuxCreateStruct(&MachinesPerOp[reset], FileToWrite, newjob_fromfile,i+1, NumberOfAtualOperation);
+            newjob = AuxCreateStruct(&MachinesPerOp[counter+1], FileToWrite, newjob_fromfile,i+1, NumberOfAtualOperation);//+1 , porque o primeiro valor é para saber o numero de listas..
             if(i!=0){
                 NumberOfAtualOperation = &newjob->operation;
                 newjob_fromfile = newjob;
             }   
-            reset++;
+            counter++;
 
         }
      fclose(FileToWrite);
@@ -427,9 +437,12 @@ int* AuxReadFile(FILE* FileToWrite)
     char* stdToCompare = (char*)malloc(sizeof(char));
     char* aux = (char*)malloc(sizeof(char));
     int* MachinesPerOp = (int*)malloc(sizeof(int));
-    int NumberOfAtualOperation = 0;
-    int getmachines, getcycletime, count_fistline = 0, count_index = 0;
-    int Number_Lines = 1;// nr de linhas lidas
+
+    int getmachines, getcycletime, count_fistline = 0, count_index = 0, CounterOfLists = 0, Number_Lines = 1, NumberOfAtualOperation = 0;
+   
+
+    MachinesPerOp[count_index] = 0; //PORQUE DEPOIS VAI TOMAR O VALOR DE QUANTIDADE DE LISTAS!!!!!!
+
 
 
     //enquanto o valor de retorno da função for diferente de nulo , ou seja ainda há "linhas no ficheiro"
@@ -447,6 +460,8 @@ int* AuxReadFile(FILE* FileToWrite)
             {
                 count_fistline++;
                 if (Number_Lines == 2 && NumberOfAtualOperation == 0 && count_fistline == 1) {
+                    count_index++;
+                    CounterOfLists++;
                     NumberOfAtualOperation = atoi(stdToCompare);
                     MachinesPerOp[count_index] = 1;
                 }
@@ -454,9 +469,8 @@ int* AuxReadFile(FILE* FileToWrite)
                     MachinesPerOp[count_index]++;
                 }
                 else if (NumberOfAtualOperation != atoi(stdToCompare) && Number_Lines != 1 && count_fistline == 1) {
-
+                    CounterOfLists++;
                     NumberOfAtualOperation = atoi(stdToCompare);
-                    //printf("Nr de maquinas ===%d\n", MachinesPerOp);//Para depois de tempo ciclo nao termos ";"
                     count_index++;
                     MachinesPerOp[count_index] = 1;
                 }
@@ -475,8 +489,8 @@ int* AuxReadFile(FILE* FileToWrite)
 
         Number_Lines++;
     }
-
-
+    int x = CounterOfLists;
+    MachinesPerOp[0] = CounterOfLists;
     stdToCompare = 0;//senao estoura a dar free ... sera por ter \n??
     free(aux);
     free(stdToCompare);
@@ -583,7 +597,7 @@ struct Job* AuxCreateStruct(int *Machines, FILE* FileToWrite, Operation* newjob_
                 else {
                     return newjob;
                 }
-                printf("%s;", pch);
+                //printf("%s;", pch);
                 pch = strtok(NULL, ";");
              
             }

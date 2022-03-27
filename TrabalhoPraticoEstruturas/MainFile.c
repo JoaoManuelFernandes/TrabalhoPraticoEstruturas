@@ -5,7 +5,7 @@
 
 
 int main() {
-        setlocale(LC_ALL, "Portuguese");// caracteres portugues aceites
+        setlocale(LC_ALL, "portuguese");// caracteres portugues aceites
         Operation* newjob = NULL; // Lista ligada vazia
         int optionselected = 0;//operation, machine, cycletime;
         int flag; // garantir que nao se faz a mesma opera��o 2x
@@ -18,12 +18,16 @@ int main() {
 
             switch (optionselected)
             {
-    
+                case 0:
+                    printf("Consola irá encerrar\n");
+                    //sleep(1);
+                    exit(0);
                 case 1:
       
                     while (optionselected == 1)
                     {
                         int numberofop, *op;
+                        setlocale(LC_ALL, "pt");// caracteres portugues aceites
                         printf("Quantas operações terá?\n");
                         scanf("%d", &numberofop);
                         op = &numberofop;
@@ -173,8 +177,6 @@ int main() {
                     
             }
         } while (optionselected != 0);
-        printf("Consola irá encerrar\n");
-        //sleep(1);
-        exit(0);
+
 
 }
