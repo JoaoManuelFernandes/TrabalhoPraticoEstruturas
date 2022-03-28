@@ -19,16 +19,15 @@ int main() {
             switch (optionselected)
             {
                 case 0:
-                    printf("Consola irá encerrar\n");
-                    //sleep(1);
+                    printf("Consola ira encerrar\n");
                     exit(0);
                 case 1:
       
                     while (optionselected == 1)
                     {
                         int numberofop, *op;
-                        setlocale(LC_ALL, "pt");// caracteres portugues aceites
-                        printf("Quantas operações terá?\n");
+                     //   setlocale(LC_ALL, "pt");// caracteres portugues aceites
+                        printf("Quantas operacoes tera?\n");
                         scanf("%d", &numberofop);
                         op = &numberofop;
                         int* index;
@@ -36,16 +35,72 @@ int main() {
                              index = &i;
                              newjob = CreateJobOnEnd(newjob, op, index);
                              if (newjob == NULL) {
-                               printf("Não criou uma nova operaçãoo , repetir ? Presse 1 para tal! \n");
+                               printf("Não criou uma nova operacao , repetir ? Presse 1 para tal! \n");
 
                              }
                         }
-                        printf("Continuar a Inserir ?\n");
-                        printf("1-Sim 10-MenuPrincipal 0-Sair \n");
-                        scanf( "%d", &optionselected);
+                        printf("\n=============================\n");
+                        printf("Processo criado com sucesso!");
+                        printf("\n=============================\n");
+                        optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
                     }
+                   
                 case 2:
+
                     while (optionselected == 2)
+                    {
+                        char decision[1];
+                        //   setlocale(LC_ALL, "pt");// caracteres portugues aceites
+                        printf("Onde quer inserir a nova operacao? \n[I]- Incio [F]-Fim\n");
+                        scanf("%s", decision);
+ 
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+
+                        if (strcmp(decision, "I") == 0) {
+                            newjob_fromfile = CreateJobOnInit(newjob_fromfile);//Struct nula,numero de operaçoes, posição.. 
+                            if (newjob_fromfile == NULL) {
+                                printf("Valor inserido invalido!");
+                                optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+
+                            }
+                            SaveStructToFile(newjob_fromfile);
+                            printf("\n=============================\n");
+                            printf("Operacao criada e guardada com sucesso!");
+                            printf("\n=============================\n");
+                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                         
+                        }
+                        else if (strcmp(decision, "F") == 0) {                          
+                            int qt = quantidadeObjetos(newjob_fromfile);
+
+                            int *pointer = &qt;
+
+                            newjob_fromfile = CreateJobOnEnd(newjob_fromfile, 1, pointer);
+                            if (newjob_fromfile == NULL) {
+                                printf("Valor inserido invalido!");
+                                optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+
+                            }
+                            SaveStructToFile(newjob_fromfile);
+                            printf("\n=============================\n");
+                            printf("Operacao criada e guardada com sucesso!");
+                            printf("\n=============================\n");
+                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+
+                        }
+                        else
+                        {
+                            printf("Tem de colocar os caracteres que estao disponiveis! [I]- Incio [F]-Fim\n");
+                            printf("Repita o processo!\n");
+                            //sleep(100);
+                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                        } 
+
+             
+                    }
+                case 3:
+                    while (optionselected == 3)
                     {
                         system("cls");
                       
@@ -55,53 +110,53 @@ int main() {
                         //CheckOperations(newjob_fromfile);
                         int qt = quantidadeObjetos(newjob_fromfile);
 
-                        printf("Qual a operação que deseja eliminar?\n");
+                        printf("Qual a operacao que deseja eliminar?\n");
                         int aux;
                         scanf("%d", &aux);
 
-                        newjob_fromfile = RemoveAList(newjob_fromfile, aux);
+                        newjob_fromfile = RemoveAList(newjob_fromfile, aux-1);
                         int qt_aux = quantidadeObjetos(newjob_fromfile);
                         if (qt != qt_aux){
                             system("cls");
                             SaveStructToFile(newjob_fromfile);
                         }
-                        optionselected = 10;//para ir novamente para o mainfunction e pedir a nova opera��o
+                        optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
                         
                     }
-                case 3:
-                    while (optionselected == 3)
+                case 4:
+                    while (optionselected == 4)
                     {
                         printf("Estrutura atual\n");
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
                         newjob_fromfile = ReadStructFromFile(newjob_fromfile);
-                        printf("Qual a operação que deseja alterar?\n");
+                        printf("Qual a operacao que deseja alterar?\n");
                         int op, machine,pos, cycletime;
                         int *op_pointer = &op, *machine_pointer = &machine,*cycletime_pointer=&cycletime;
                         char decision[1];
                         scanf("%d", &op);
-                        printf("Deseja alterar máquina ou tempo de ciclo?\n");
-                        printf("Seleciona M para máquina ou T para temo de ciclo\n");
+                        printf("Deseja alterar maquina ou tempo de ciclo?\n");
+                        printf("Seleciona M para maquina ou T para temo de ciclo\n");
                         scanf("%s", decision);
                         if (strcmp(decision,"M") == 0) {
-                            printf("Qual é a nova máquina que irá ser inserida?\n");
+                            printf("Qual é a nova maquina que ira ser inserida?\n");
                             scanf("%d", &machine);
-                            printf("Em que posição se encontra a máquina na lista? Veja pela estrutura!\n");
+                            printf("Em que posição se encontra a maquina na lista? Veja pela estrutura!\n");
                             scanf("%d", &pos);
                             if ((machine>0 && machine<9) && (pos > 0 && pos < 9)){
-                                printf("Máquina ou posição inválida!");
+                                printf("Máquina ou posicao invalida!");
                             }
                             else {
                                 newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, machine_pointer, pos - 1);
                             }
                         }
                         else if (strcmp(decision, "T") == 0) {
-                            printf("Qual é o novo tempo de ciclo que irá ser inserido?\n");
+                            printf("Qual e o novo tempo de ciclo que ira ser inserido?\n");
                             scanf("%d", &cycletime);
-                            printf("Em que posição se encontra o novo tempo de ciclo  na lista? Veja pela estrutura!\n");
+                            printf("Em que posicao se encontra o novo tempo de ciclo  na lista? Veja pela estrutura!\n");
                             scanf("%d", &pos);
 
                             if ((machine > 0 && machine < 9) && (pos > 0 && pos < 9)) {
-                                printf("Máquina ou posição inválida!");
+                                printf("Maquina ou posicao invalida!");
                             }
                             else {
                                 newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, cycletime_pointer, pos - 1);
@@ -109,7 +164,7 @@ int main() {
                             
                          }
                         else {
-                            printf("Não é uma opção válida!!");
+                            printf("Nao e uma opcao valida!!");
                             optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
                             continue;
                         }
@@ -120,56 +175,59 @@ int main() {
                             CheckOperations(newjob_fromfile);
                         }
                      
-                    optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
+                    optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
-                case 4:
-                    while (optionselected == 4)
+                case 5:
+                    while (optionselected == 5)
                     {
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
                         newjob_fromfile = ReadStructFromFile(newjob_fromfile);
                         LessTimeToComplete(newjob_fromfile);
-                        optionselected = 10;//para ir novamente para o mainfunction e pedir a nova opera��o
+                        optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
                     }
-                case 5: 
-                    while (optionselected == 5)
+                case 6: 
+                    while (optionselected == 6)
                 {
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
                         newjob_fromfile = ReadStructFromFile(newjob_fromfile);
                         LargerTimeToComplete(newjob_fromfile);
-                        optionselected = 10;//para ir novamente para o mainfunction e pedir a nova opera��o
+                        optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
 
                 }
-                case 6:
-                    while (optionselected == 6)
+                case 7:
+                    while (optionselected == 7)
                     {
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
                         newjob_fromfile = ReadStructFromFile(newjob_fromfile);
                         AllCombinations(newjob_fromfile);
-                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
-                    }
-                case 7:
-                    while (optionselected == 7)
-                    {
-
-                        SaveStructToFile(newjob);
-                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
-
-                       
+                        optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
                 case 8:
                     while (optionselected == 8)
                     {
-                        //CRIAR STRUCT A PARTIR DO QUE SE LE NO FICHEIRO
-                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
-                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
-                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
-                    }
 
+                        SaveStructToFile(newjob);
+                        optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
+
+                       
+                    }
                 case 9:
                     while (optionselected == 9)
                     {
+                        //CRIAR STRUCT A PARTIR DO QUE SE LE NO FICHEIRO
+                        Operation* newjob_fromfile = NULL; // Lista ligada vazia
+                        newjob_fromfile = ReadStructFromFile(newjob_fromfile);
+                        if (newjob_fromfile == NULL) {
+                            printf("ALGO MAL 2!");
+                        }
+                        optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
+                    }
+
+                case 10:
+                    while (optionselected == 10)
+                    {
                         CheckOperations(newjob);
-                        optionselected = 10;// para ir novamente para o mainfunction e pedir a nova opera��o
+                        optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
                default:
 

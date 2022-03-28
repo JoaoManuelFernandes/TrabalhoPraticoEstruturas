@@ -21,7 +21,9 @@ typedef enum { False, True } bool;
 
 int MainFunction();
 int quantidadeObjetos(Operation* obj);
-struct Job* CreateJobOnInit(Operation* newjob, int* op, int* index);
+struct Job* CreateJobOnFirstTime(Operation* newjob);
+struct Job* CreateJobOnInit(Operation* newjob);
+//struct Job* insertAtMid(Operation* newjob, int pos);
 struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index);
 struct Job* RemoveAList(Operation* newjob , int pos);
 struct Job* ModifyAListMachine(Operation* newjob, int *operation,int *machine, int pos);
@@ -33,11 +35,11 @@ void LargerTimeToComplete(Operation* newjob);
 void AllCombinations(Operation* newjob);
 
 bool SaveStructToFile(Operation* newjob);
-struct Job* ReadStructFromFile(Operation* newjob_fromfile);
+struct Job* ReadStructFromFile();
 
 int* AuxReadFile(FILE*);
 
-struct Job* AuxCreateStruct(int*, FILE*, Operation* newjob_fromfile,int,int*);
+struct Job* AuxCreateStruct(int, FILE*, Operation* newjob_fromfile,int,int*);
 
 
 //vou criar 2 funçoes de ler do ficheiro
