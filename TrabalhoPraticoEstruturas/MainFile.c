@@ -142,7 +142,7 @@ int main() {
                             scanf("%d", &machine);
                             printf("Em que posição se encontra a maquina na lista? Veja pela estrutura!\n");
                             scanf("%d", &pos);
-                            if ((machine>0 && machine<9) && (pos > 0 && pos < 9)){
+                            if ((machine<0) && (pos < 0)){
                                 printf("Máquina ou posicao invalida!");
                             }
                             else {
@@ -159,7 +159,7 @@ int main() {
                                 printf("Maquina ou posicao invalida!");
                             }
                             else {
-                                newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, cycletime_pointer, pos - 1);
+                                newjob_fromfile = ModifyAListCycleTime(newjob_fromfile, op_pointer, cycletime_pointer, pos - 1);
                             }
                             
                          }
@@ -172,7 +172,8 @@ int main() {
                             printf("Erro ao alterar lista!");
                         }
                         else {
-                            CheckOperations(newjob_fromfile);
+                            SaveStructToFile(newjob_fromfile);
+                            ReadStructFromFile(newjob_fromfile);
                         }
                      
                     optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
@@ -218,7 +219,8 @@ int main() {
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
                         newjob_fromfile = ReadStructFromFile(newjob_fromfile);
                         if (newjob_fromfile == NULL) {
-                            printf("ALGO MAL 2!");
+                            printf("ERRO A LER DO FICHEIRO!");
+                            optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                         }
                         optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
