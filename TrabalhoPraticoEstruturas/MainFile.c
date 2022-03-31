@@ -35,14 +35,17 @@ int main() {
                              index = &i;
                              newjob = CreateJobOnEnd(newjob, op, index);
                              if (newjob == NULL) {
-                               printf("Não criou uma nova operacao , repetir ? Presse 1 para tal! \n");
-
+                               printf("Não criou uma nova operacao, repita o processo com valores diferentes de 0 oou 9 para o numero de maquinas!! \n");
+                               optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                               break;
                              }
                         }
-                        printf("\n=============================\n");
-                        printf("Processo criado com sucesso!");
-                        printf("\n=============================\n");
-                        optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                        if (newjob != NULL) {
+                            printf("\n=============================\n");
+                            printf("Processo criado com sucesso!");
+                            printf("\n=============================\n");
+                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                        }
                     }
                    
                 case 2:
@@ -51,7 +54,7 @@ int main() {
                     {
                         char decision[1];
                         //   setlocale(LC_ALL, "pt");// caracteres portugues aceites
-                        printf("Onde quer inserir a nova operacao? \n[I]- Incio [F]-Fim\n");
+                        printf("Onde quer inserir a nova operacao? \n[I]- Incio [M]-Meio [F]-Fim\n");
                         scanf("%s", decision);
  
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
@@ -62,13 +65,8 @@ int main() {
                             if (newjob_fromfile == NULL) {
                                 printf("Valor inserido invalido!");
                                 optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
-
+                                break;
                             }
-                            SaveStructToFile(newjob_fromfile);
-                            printf("\n=============================\n");
-                            printf("Operacao criada e guardada com sucesso!");
-                            printf("\n=============================\n");
-                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
                          
                         }
                         else if (strcmp(decision, "F") == 0) {                          
@@ -82,22 +80,39 @@ int main() {
                                 optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
 
                             }
-                            SaveStructToFile(newjob_fromfile);
-                            printf("\n=============================\n");
-                            printf("Operacao criada e guardada com sucesso!");
-                            printf("\n=============================\n");
-                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
 
+                        }
+                        else if (strcmp(decision, "M") == 0) {
+                            int pos = 0;
+                            printf("qual posicao que pretende?\n");
+                            scanf("%d", &pos);
+                            newjob_fromfile = insertAtMid(newjob_fromfile, pos-1);//POS -1 PARA UM CORRETA INSERÇÃO!
+                            
+
+                            if (newjob_fromfile == NULL) {
+                                printf("Valor inserido invalido!");
+                                optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                                break;
+
+                            }
                         }
                         else
                         {
                             printf("Tem de colocar os caracteres que estao disponiveis! [I]- Incio [F]-Fim\n");
                             printf("Repita o processo!\n");
                             //sleep(100);
+                            
                             optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
-                        } 
-
-             
+                            break;
+                        }
+                        if (newjob_fromfile != NULL) {
+                            SaveStructToFile(newjob_fromfile);
+                            optionselected = 11;//para ir novamente para o mainfunction e pedir a nova opera��o
+                            ReadStructFromFile(newjob_fromfile);
+                            printf("\n=============================\n");
+                            printf("Operacao criada e guardada com sucesso!");
+                            printf("\n=============================\n");
+                        }
                     }
                 case 3:
                     while (optionselected == 3)
@@ -138,12 +153,12 @@ int main() {
                         printf("Seleciona M para maquina ou T para temo de ciclo\n");
                         scanf("%s", decision);
                         if (strcmp(decision,"M") == 0) {
-                            printf("Qual é a nova maquina que ira ser inserida?\n");
+                            printf("Qual e a nova maquina que ira ser inserida?\n");
                             scanf("%d", &machine);
-                            printf("Em que posição se encontra a maquina na lista? Veja pela estrutura!\n");
+                            printf("Em que posicao se encontra a maquina na lista? Veja pela estrutura!\n");
                             scanf("%d", &pos);
                             if ((machine<0) && (pos < 0)){
-                                printf("Máquina ou posicao invalida!");
+                                printf("Maquina ou posicao invalida!");
                             }
                             else {
                                 newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, machine_pointer, pos - 1);
@@ -206,8 +221,10 @@ int main() {
                 case 8:
                     while (optionselected == 8)
                     {
-
-                        SaveStructToFile(newjob);
+                        bool res;
+                        res = SaveStructToFile(newjob);
+                        if (res == True) printf("\nProcesso guardado com sucesso!\n");
+                        else printf("\nErro ao gravar novo processo para ficheiro!\n");
                         optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
 
                        
@@ -237,6 +254,4 @@ int main() {
                     
             }
         } while (optionselected != 0);
-
-
 }

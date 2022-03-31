@@ -23,7 +23,7 @@ int MainFunction();
 int quantidadeObjetos(Operation* obj);
 struct Job* CreateJobOnFirstTime(Operation* newjob);
 struct Job* CreateJobOnInit(Operation* newjob);
-//struct Job* insertAtMid(Operation* newjob, int pos);
+struct Job* insertAtMid(Operation* newjob, int pos);
 struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index);
 struct Job* RemoveAList(Operation* newjob , int pos);
 struct Job* ModifyAListMachine(Operation* newjob, int *operation,int *machine, int pos);

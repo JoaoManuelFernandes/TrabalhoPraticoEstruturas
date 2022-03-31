@@ -34,7 +34,7 @@ int MainFunction()
         scanf(" %d", &optionselected);
        system("cls");
         //clrscr();
-    } while ((optionselected <= 0) || (optionselected > 10));
+    } while ((optionselected < 0) || (optionselected > 10));
 
     return(optionselected);
 
@@ -59,6 +59,10 @@ struct Job* CreateJobOnFirstTime(Operation* newop)
 
         printf("Quantas maquinas tera a operacao %d ?\n", 1);
         scanf("%d", &MachinesPerOp);
+        if (MachinesPerOp > 8 || MachinesPerOp == 0) {
+
+            return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+        }
         //int* arrayexample=(int*)malloc(sizeof(int)* MachinesPerOp);
         newjob->machine = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
         newjob->cycletime = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
@@ -70,8 +74,8 @@ struct Job* CreateJobOnFirstTime(Operation* newop)
 
             printf("Qual a maquina associada %d ?\n", x + 1);
             scanf("%d", &getmachines);
+            if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
             newjob->machine[x] = getmachines;
-
             printf("Qual o tempo de ciclo %d ?\n", x + 1);
             scanf("%d", &getcycletime);
             newjob->cycletime[x] = getcycletime;
@@ -99,7 +103,11 @@ struct Job* CreateJobOnInit(Operation* newop)
 
         printf("Quantas maquinas tera a operacao %d ?\n", 1);
         scanf("%d", &MachinesPerOp);
-        if (MachinesPerOp == 0) return  NULL;
+
+        if (MachinesPerOp > 8 || MachinesPerOp == 0) {
+
+            return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+        }
         
         //int* arrayexample=(int*)malloc(sizeof(int)* MachinesPerOp);
         newjob->machine = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
@@ -112,8 +120,8 @@ struct Job* CreateJobOnInit(Operation* newop)
 
             printf("Qual a maquina associada %d ?\n", x + 1);
             scanf("%d", &getmachines);
+            if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
             newjob->machine[x] = getmachines;
-
             printf("Qual o tempo de ciclo %d ?\n", x + 1);
             scanf("%d", &getcycletime);
             newjob->cycletime[x] = getcycletime;
@@ -140,72 +148,83 @@ struct Job* CreateJobOnInit(Operation* newop)
 
 
     return NULL;
+}  
+// para quando já existe uma estrutura  , enquanto a outra é para uma estrutura nula!
+
+
+struct Job* insertAtMid(Operation* newjob, int pos)
+{
+    if (newjob != NULL) {
+
+        if (pos == 0)
+        {
+            return(CreateJobOnInit(newjob));
+        }
+         
+ 
+
+
+      
+        else {
+
+            int getmachines, getcycletime;
+            int MachinesPerOp, counter = 1, position = pos;
+
+            printf("Quantas maquinas tera a operacao %d ?\n", pos + 1);
+            scanf("%d", &MachinesPerOp);
+            if (MachinesPerOp > 8 || MachinesPerOp == 0) {
+
+                return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+            }
+
+
+            Operation* anterior = newjob, * proximo = newjob, * novo = (Operation*)malloc(sizeof(Operation));
+
+            int indice = 0;
+            int qt = quantidadeObjetos(newjob);
+
+            novo->machine = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+            novo->cycletime = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+            novo->operation = (int*)malloc(1 * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+            
+            while (pos > 1) {
+               // if (indice == 0) anterior = proximo; //porque precisamos que o anterior sai com o proximo e o primeiro aponte para o primiero do proximo!
+                
+                proximo = proximo->next;
+                anterior = proximo;
+                pos--;
+     
+            }
+            for (int x = 0; x < MachinesPerOp; x++) {
+                  proximo = proximo->next;
+                 
+                  novo->operation = position+1;
+                  novo->numberofmachines = MachinesPerOp;
+                  printf("Qual a maquina associada %d ?\n", x + 1);
+                  scanf("%d", &getmachines);
+                  novo->machine[x] = getmachines;
+                  if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+                  printf("Qual o tempo de ciclo %d ?\n", x + 1);
+                  scanf("%d", &getcycletime);
+                  novo->cycletime[x] = getcycletime;
+                  novo->next = proximo;
+             }
+            while (proximo !=NULL)
+            {
+                proximo->operation = proximo->operation +1;
+                proximo = proximo->next;
+            }
+
+            anterior->next = novo;
+            return(newjob);
+
+        }
+    }
+
+    else  return NULL;
+
 }
 
-
-//
-//struct Job* insertAtMid(Operation* newjob, int pos)
-//{
-//
-//
-//    Operation* aux = NULL;
-//    int MachinesPerOp;
-//
-//
-//    if (newjob != NULL){
-//        printf("Quantas maquinas tera a operacao %d ?\n", 1);
-//        scanf("%d", &MachinesPerOp);
-//
-//        newjob->machine = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
-//        newjob->cycletime = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
-//        newjob->operation = (int*)malloc(1 * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
-//        newjob->numberofmachines = MachinesPerOp;
-//        newjob->operation = pos;
-//
-//
-//        
-//        aux
-//        Node* newNode = getNode(x);
-//
-//        Node* ptr = *head_ref;
-//        int len = 0;
-//
-//
-//
-//
-//
-//
-//
-//
-//        // calculate length of the linked list
-//        //, i.e, the number of nodes
-//        while (ptr != NULL) {
-//            len++;
-//            ptr = ptr->next;
-//        }
-//
-//        // 'count' the number of nodes after which
-//        //  the new node is to be inserted
-//        int count = ((len % 2) == 0) ? (len / 2) :
-//            (len + 1) / 2;
-//        ptr = *head_ref;
-//
-//        // 'ptr' points to the node after which
-//        // the new node is to be inserted
-//        while (count-- > 1)
-//            ptr = ptr->next;
-//
-//        // insert the 'newNode' and adjust the
-//        // required links
-//        newNode->next = ptr->next;
-//        ptr->next = newNode;
-//    }
-//    else return NULL;
-//
-// 
-//
-//}
-//
 
 
 struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
@@ -227,7 +246,9 @@ struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
 
             printf("Quantas maquinas tera a operacao %d ?\n", *index + 1);
             scanf("%d", &MachinesPerOp);
-            if (MachinesPerOp == 0) return  NULL;
+            if (MachinesPerOp > 8 || MachinesPerOp == 0) {
+               return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+            }
             //int* arrayexample=(int*)malloc(sizeof(int)* MachinesPerOp);
             novo->machine = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
             novo->cycletime = (int*)malloc(MachinesPerOp * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
@@ -240,6 +261,7 @@ struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
 
                 printf("Qual a maquina associada %d ?\n", x + 1);
                 scanf("%d", &getmachines);
+                if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
                 novo->machine[x] = getmachines;
 
                 printf("Qual o tempo de ciclo %d ?\n", x + 1);
@@ -454,11 +476,11 @@ void LargerTimeToComplete(Operation* newjob)
         sumcycletime += bigger_cycle;
 
 
-        printf("Menor tempos na operação %d\n", lastoperation);
+        printf("Maior tempos na operação %d\n", lastoperation);
         printf("Máquina = %d, TempoCiclo = %d\n", bigger_machine, bigger_cycle);
 
     }
-    printf("Soma do tempo minimo = %d\n", sumcycletime);
+    printf("Soma do tempo máximo = %d\n", sumcycletime);
 
 }
 
@@ -496,10 +518,11 @@ bool SaveStructToFile(Operation* newjob)
     FILE* FileToWrite;
     FileToWrite = fopen("EstruturaDeDadosFile.csv", "w"); // w+ Open for  writing.
     
-    if (FileToWrite == NULL)
+    if (FileToWrite == NULL || newjob == NULL)
     {
         printf("Error!");
         return False;
+        fclose(FileToWrite);
     }
 
     fprintf(FileToWrite, "Operação;Máquina;TempoCiclo\n");
@@ -508,10 +531,10 @@ bool SaveStructToFile(Operation* newjob)
 
         for (int i = 0; i < newjob->numberofmachines; i++)
         {
-            printf("%p %d %d %d\n", newjob, newjob->operation, newjob->machine[i], newjob->cycletime[i]);
+            //printf("%p %d %d %d\n", newjob, newjob->operation, newjob->machine[i], newjob->cycletime[i]);
             fprintf(FileToWrite, "%d;%d;%d\n", newjob->operation, newjob->machine[i], newjob->cycletime[i]);
         }
-        printf("%p\n", newjob->next);
+        //printf("%p\n", newjob->next);
         newjob = newjob->next;
 
         
