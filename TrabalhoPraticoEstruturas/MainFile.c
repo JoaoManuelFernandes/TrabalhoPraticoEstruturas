@@ -141,55 +141,81 @@ int main() {
                 case 4:
                     while (optionselected == 4)
                     {
+                        char decision;
                         printf("Estrutura atual\n");
                         Operation* newjob_fromfile = NULL; // Lista ligada vazia
                         newjob_fromfile = ReadStructFromFile(newjob_fromfile);
-                        printf("Qual a operacao que deseja alterar?\n");
-                        int op, machine,pos, cycletime;
-                        int *op_pointer = &op, *machine_pointer = &machine,*cycletime_pointer=&cycletime;
-                        char decision[1];
-                        scanf("%d", &op);
-                        printf("Deseja alterar maquina ou tempo de ciclo?\n");
-                        printf("Seleciona M para maquina ou T para temo de ciclo\n");
+                        printf("Qual é a operacao que pretende efetuar?\n [A]-Alterar um valor ");
+                        printf("[R]-Remover uma máquina de uma operação [N]-Adicionar uma nova máquina na operação\n");
                         scanf("%s", decision);
-                        if (strcmp(decision,"M") == 0) {
-                            printf("Qual e a nova maquina que ira ser inserida?\n");
-                            scanf("%d", &machine);
-                            printf("Em que posicao se encontra a maquina na lista? Veja pela estrutura!\n");
-                            scanf("%d", &pos);
-                            if ((machine<0) && (pos < 0)){
-                                printf("Maquina ou posicao invalida!");
-                            }
-                            else {
-                                newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, machine_pointer, pos - 1);
-                            }
-                        }
-                        else if (strcmp(decision, "T") == 0) {
-                            printf("Qual e o novo tempo de ciclo que ira ser inserido?\n");
-                            scanf("%d", &cycletime);
-                            printf("Em que posicao se encontra o novo tempo de ciclo  na lista? Veja pela estrutura!\n");
-                            scanf("%d", &pos);
 
-                            if ((machine > 0 && machine < 9) && (pos > 0 && pos < 9)) {
+
+                        if (strcmp(decision, "A") == 0) {
+                            printf("Qual a operacao que deseja alterar?\n");
+                            int op, machine,pos, cycletime;
+                            int *op_pointer = &op, *machine_pointer = &machine,*cycletime_pointer=&cycletime;
+                            char decision[1];
+                            scanf("%d", &op);
+                            printf("Deseja alterar maquina ou tempo de ciclo?\n");
+                            printf("Seleciona M para maquina ou T para temo de ciclo\n");
+                            scanf("%s", decision);
+
+                            if (strcmp(decision,"M") == 0) {
+
+                                printf("Qual e a nova maquina que ira ser inserida?\n");
+                                scanf("%d", &machine);
+                                printf("Em que posicao se encontra a maquina na lista? Veja pela estrutura!\n");
+                                scanf("%d", &pos);
+                                if ((machine<0) && (pos < 0)){
+                               printf("Maquina ou posicao invalida!");
+                                }
+                             else {
+                                 newjob_fromfile = ModifyAListMachine(newjob_fromfile, op_pointer, machine_pointer, pos - 1);
+                                }
+                            }
+
+                            else if (strcmp(decision, "T") == 0) {
+                                printf("Qual e o novo tempo de ciclo que ira ser inserido?\n");
+                                scanf("%d", &cycletime);
+                                printf("Em que posicao se encontra o novo tempo de ciclo  na lista? Veja pela estrutura!\n");
+                                scanf("%d", &pos);
+
+                               if ((machine > 0 && machine < 9) && (pos > 0 && pos < 9)) {
                                 printf("Maquina ou posicao invalida!");
-                            }
-                            else {
-                                newjob_fromfile = ModifyAListCycleTime(newjob_fromfile, op_pointer, cycletime_pointer, pos - 1);
-                            }
-                            
-                         }
-                        else {
+                               }
+                               else {
+                                 newjob_fromfile = ModifyAListCycleTime(newjob_fromfile, op_pointer, cycletime_pointer, pos - 1);
+                                }
+                               }
+
+                               else {
+                               printf("Nao e uma opcao valida!!");
+                               optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
+                               continue;
+                                }
+                        }
+
+                        else if(strcmp(decision, "R") == 0){}
+
+                        else if (strcmp(decision, "N") == 0) {}
+
+                        else
+                        {
                             printf("Nao e uma opcao valida!!");
-                            optionselected = 9;// para ir novamente para o mainfunction e pedir a nova opera��o
+                            optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                             continue;
+
                         }
-                        if(newjob_fromfile == NULL){
+
+
+
+                    if(newjob_fromfile == NULL){
                             printf("Erro ao alterar lista!");
-                        }
-                        else {
-                            SaveStructToFile(newjob_fromfile);
-                            ReadStructFromFile(newjob_fromfile);
-                        }
+                    }
+                    else {
+                           SaveStructToFile(newjob_fromfile);
+                           ReadStructFromFile(newjob_fromfile);
+                    }
                      
                     optionselected = 11;// para ir novamente para o mainfunction e pedir a nova opera��o
                     }
