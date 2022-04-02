@@ -225,8 +225,6 @@ struct Job* insertAtMid(Operation* newjob, int pos)
 
 }
 
-
-
 struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
 {
     setlocale(LC_ALL, "portuguese");// caracteres portugues aceites
@@ -286,12 +284,18 @@ struct Job* CreateJobOnEnd(Operation* newjob, int* op, int* index)
 
 struct Job* RemoveAList(Operation* newjob, int pos)
 {
-    Operation* atual = newjob, * proximo = newjob;
+    Operation* atual = newjob, * proximo;
 
         if (newjob == NULL) return(newjob);
         else if (pos == 0) {
             newjob = atual->next;
             free(atual);
+            proximo = newjob;
+            while (proximo != NULL) {
+                
+                proximo->operation = proximo->operation - 1;
+                proximo = proximo->next;
+            }
             return newjob;
         }
 
@@ -319,6 +323,13 @@ struct Job* RemoveAList(Operation* newjob, int pos)
 
             // Unlink the deleted node from list
             atual->next = proximo;
+
+            while (proximo != NULL) {
+
+                proximo->operation = proximo->operation - 1;
+                proximo = proximo->next;
+            }
+
             return(newjob);
 
         }
@@ -513,6 +524,114 @@ void AllCombinations(Operation* newjob)
 
 }
 
+struct Job* AddMachine(Operation* newjob,int* operation)
+{
+    if (newjob != NULL) {
+        Operation* aux = newjob;
+       
+
+        while (aux !=NULL)
+        {
+            if (aux->operation == *operation) {
+
+                int *array_aux_machine = (int*)malloc(aux->numberofmachines * sizeof(int));
+                int *array_aux_cycle = (int*)malloc(aux->numberofmachines * sizeof(int));
+                int numberofmachines = aux->numberofmachines + 1;
+                int getmachines, getcycletime;
+                for (int i = 0; i < aux->numberofmachines; i++) {
+
+                    array_aux_machine[i] = aux->machine[i];
+                    array_aux_cycle[i] = aux->cycletime[i];
+
+                }
+                free(aux->machine);
+                free(aux->cycletime);
+                aux->machine = (int*)malloc(numberofmachines * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+                aux->cycletime = (int*)malloc(numberofmachines * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+                aux->numberofmachines = numberofmachines;
+
+                for (int i = 0; i < numberofmachines; i++) {
+                    if(i!= numberofmachines-1){
+                        aux->machine[i] = array_aux_machine[i];
+                     aux->cycletime[i]= array_aux_cycle[i] ;
+                    }
+                    else {
+                        printf("Qual a maquina associada %d ?\n", i + 1);
+                        scanf("%d", &getmachines);
+                        if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+                        aux->machine[i] = getmachines;
+                        printf("Qual o tempo de ciclo %d ?\n", i + 1);
+                        scanf("%d", &getcycletime);
+                        aux->cycletime[i] = getcycletime;
+                    }
+                }
+
+               
+                return  newjob;
+            }
+            aux = aux->next;
+
+        }
+
+
+
+
+
+    }
+    else return NULL;
+    
+
+
+
+}
+
+struct Job* RemoveMachine(Operation* newjob, int* operation)
+{
+    if (newjob != NULL) {
+        Operation* aux = newjob;
+
+        while (aux != NULL)
+        {
+            if (aux->operation == *operation) {
+            
+
+                int* array_aux_machine = (int*)malloc(aux->numberofmachines * sizeof(int));
+                int* array_aux_cycle = (int*)malloc(aux->numberofmachines * sizeof(int));
+                int numberofmachines = aux->numberofmachines - 1;
+                int getmachines, getcycletime;          
+                printf("Qual a posicao da maquina que pretende eliminar ?\n");
+                scanf("%d", &getmachines);
+                for (int i = 0; i < aux->numberofmachines; i++) {
+
+                    if (i != getmachines) {
+                        array_aux_machine[i] = aux->machine[i];
+                        array_aux_cycle[i] = aux->cycletime[i];
+                        printf("Machine==== %d\n",array_aux_machine[i]);
+                        printf("Cycle==== %d\n", array_aux_cycle[i]);
+                    }
+
+                }
+                free(aux->machine);
+                free(aux->cycletime);
+                aux->machine = (int*)malloc(numberofmachines * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+                aux->cycletime = (int*)malloc(numberofmachines * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
+                aux->numberofmachines = numberofmachines;
+                for (int i = 0; i < numberofmachines; i++) {
+                
+                    aux->machine[i] = array_aux_machine[i];
+                    aux->cycletime[i] = array_aux_cycle[i];
+                }
+
+                return  newjob;
+            }
+            aux = aux->next;
+        }
+    }
+
+
+    return NULL;
+}
+
 bool SaveStructToFile(Operation* newjob)
 {
     FILE* FileToWrite;
@@ -563,19 +682,6 @@ struct Job* ReadStructFromFile()
 
         int counter = 0;
 
-        //FILE* FileToWrite_txt;
-        //FileToWrite_txt = fopen("NumberOfOperations.txt", "w"); // r Open for both reading .
-        //for (int i = 0; i < MachinesPerOp[0] + 1; i++) {//+1 porque temos a a linha do operação..
-        //    if (FileToWrite != NULL) {
-        //    fprintf(FileToWrite_txt, "%d\n", MachinesPerOp[counter]);
-        //    }
-        //    counter++;
-        //}//THIS
-
-        //fclose(FileToWrite_txt);//THIS
-        //FileToWrite_txt = fopen("NumberOfOperations.txt", "r"); // r Open for both reading .//THIS
-
-
         counter = 0;
         int auxiliar = 0;
         int numberofoperations = MachinesPerOp[0] + 1;
@@ -596,18 +702,14 @@ struct Job* ReadStructFromFile()
 
         FileToWrite = fopen("EstruturaDeDadosFile.csv", "r"); // r Open for both reading .
         for(int i = 0 ; i< numberofoperations; i++){//+1 porque temos a a linha do operação..
-            //fgets(line, line_size, FileToWrite_txt);
-            //
-            //line = strtok(line, "\n");// subdividmos pelos caracter especificado e guardamos tudo no apontador
-            //int tosend_Machines = atoi(line);
-            //if (i == 1) {
-            //    counter = 0;
-            //    newjob = NULL;
-            //}//THIS
-   
-        
-            
+       
             int prms_array = MachinesPerOp_aux[counter];
+            if (prms_array > 100) {
+                printf("ERRO AO LER FICHEIRO!!!!!\n"); 
+                return NULL;
+            }//DÁ MUITOS BUGS A LER ARRAY!
+
+
             printf("prms_array %d\n", prms_array);
             newjob = AuxCreateStruct(prms_array, FileToWrite, newjob_fromfile,i+1, NumberOfAtualOperation);//+1 , porque o primeiro valor é para saber o numero de listas..
 

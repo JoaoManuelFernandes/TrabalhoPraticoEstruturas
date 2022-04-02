@@ -34,6 +34,10 @@ void LessTimeToComplete(Operation* newjob);
 void LargerTimeToComplete(Operation* newjob);
 void AllCombinations(Operation* newjob);
 
+struct Job* AddMachine(Operation* newjob,int *operation);
+struct Job* RemoveMachine(Operation* newjob, int* operation);
+
+
 bool SaveStructToFile(Operation* newjob);
 struct Job* ReadStructFromFile();
 
