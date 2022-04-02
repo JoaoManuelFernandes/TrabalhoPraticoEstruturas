@@ -251,11 +251,6 @@ int main() {
                                printf("Nova maquina adicionada e guardada com sucesso!");
                                printf("\n=============================\n");
                            }
-                            if (strcmp(decision, "R") == 0) {
-                                printf("\n=============================\n");
-                                printf("Nova maquina removida e guardada com sucesso!");
-                                printf("\n=============================\n");
-                            }
 
                     }
                      
