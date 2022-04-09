@@ -1,15 +1,20 @@
-﻿  StructFile.c
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(69,58): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(115,58): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
+﻿  MainFile.c
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\MainFile.c(74,92): warning C4047: 'função': 'int *' difere em níveis de indireção de 'int'
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\MainFile.c(74,91): warning C4024: 'CreateMachineOnEnd': tipos diferentes para parâmetro formal e real 2
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\MainFile.c(11,13): warning C4101: 'flag': variável local não referenciada
+  StructFile.c
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(69,62): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(115,62): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
 C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(188,60): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
 C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(253,60): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
 C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(523,21): warning C4098: 'AllCombinations': função 'void' retornando um valor
 C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(601,34): warning C4101: 'getcycletime': variável local não referenciada
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(748,9): warning C4101: 'getmachines': variável local não referenciada
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(748,22): warning C4101: 'getcycletime': variável local não referenciada
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(826,58): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(818,9): warning C4101: 'getmachines': variável local não referenciada
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(818,22): warning C4101: 'getcycletime': variável local não referenciada
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(747,9): warning C4101: 'getmachines': variável local não referenciada
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(747,22): warning C4101: 'getcycletime': variável local não referenciada
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(825,62): warning C4047: '=': 'int' difere em níveis de indireção de 'int *'
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(817,9): warning C4101: 'getmachines': variável local não referenciada
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(817,22): warning C4101: 'getcycletime': variável local não referenciada
+  Gerando Código...
 C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(586): warning C4715: 'AddMachine': nem todos os caminhos de controle retornam um valor
-C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(924): warning C4715: 'AuxCreateStruct': nem todos os caminhos de controle retornam um valor
+C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\StructFile.c(923): warning C4715: 'AuxCreateStruct': nem todos os caminhos de controle retornam um valor
   TrabalhoPraticoEstruturas.vcxproj -> C:\Users\João Fernandes\source\repos\TesteTrabalho\TesteTrabalho\TrabalhoPraticoEstruturas\TrabalhoPraticoEstruturas\Debug\TrabalhoPraticoEstruturas.exe
