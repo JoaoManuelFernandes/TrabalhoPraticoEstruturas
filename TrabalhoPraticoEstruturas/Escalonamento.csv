@@ -1,0 +1,8 @@
+Maq_1 -- Job_3_Op_1;Job_4_Op_5;
+Maq_2 -- Job_4_Op_1;Job_4_Op_1;Job_4_Op_1;Job_4_Op_1;Job_4_Op_1;Job_4_Op_1;Job_4_Op_1;Job_2_Op_2;Job_2_Op_2;Job_2_Op_2;Job_2_Op_2;
+Maq_3 -- Job_5_Op_1;Job_5_Op_1;Job_5_Op_1;Job_5_Op_3;Job_5_Op_3;Job_5_Op_3;Job_5_Op_3;
+Maq_4 -- Job_3_Op_2;Job_3_Op_2;Job_3_Op_2;Job_3_Op_2;Job_3_Op_2;Job_3_Op_3;Job_3_Op_4;Job_3_Op_4;Job_3_Op_4;Job_3_Op_4;Job_3_Op_5;
+Maq_5 -- Job_2_Op_3;Job_2_Op_3;Job_2_Op_3;Job_2_Op_3;Job_2_Op_3;Job_2_Op_3;Job_5_Op_4;Job_5_Op_4;Job_5_Op_4;
+Maq_6 -- Job_2_Op_4;Job_2_Op_4;Job_2_Op_4;Job_2_Op_4;
+Maq_7 -- Job_4_Op_3;Job_4_Op_3;Job_4_Op_3;Job_4_Op_3;Job_4_Op_3;Job_4_Op_3;Job_4_Op_3;
+Maq_8 -- Job_5_Op_2;Job_5_Op_2;Job_5_Op_2;Job_5_Op_2;
