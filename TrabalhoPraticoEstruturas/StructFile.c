@@ -51,6 +51,7 @@ struct Machine* CreateMachineOnFirstTime(Operation *newop)
    // setlocale(LC_ALL, "portuguese");// caracteres portugues aceites
     //struct Machine* newMachine = NULL;
     Operation* newMachine = (Operation*)malloc(sizeof(Operation));
+    Operation *temp = newop;
 
     if (newMachine != NULL) {
 
@@ -59,6 +60,7 @@ struct Machine* CreateMachineOnFirstTime(Operation *newop)
 
         printf("Quantas maquinas tera a operacao %d ?\n", 1);
         scanf("%d", &MachinesPerOp);
+       
         if (MachinesPerOp > 8 || MachinesPerOp == 0) {
 
             return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
@@ -69,17 +71,43 @@ struct Machine* CreateMachineOnFirstTime(Operation *newop)
         newMachine->operation = (int*)malloc(1 * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
         newMachine->numberofmachines = MachinesPerOp;
         newMachine->operation = 1;
-
+        bool _res = False;
+        int last_id = 0;
         for (int x = 0; x < MachinesPerOp; x++) {
-
+            if (last_id != x && _res == True)
+            {
+                continue;
+            }
             printf("Qual a maquina associada %d ?\n", x + 1);
             scanf("%d", &getmachines);
             if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
-            newMachine->machine[x] = getmachines;
-            printf("Qual o tempo de ciclo %d ?\n", x + 1);
-            scanf("%d", &getcycletime);
-            newMachine->cycletime[x] = getcycletime;
-            newMachine->next = newop;
+
+            if(temp !=NULL){
+                for (int i = 0; i < x; i++) {
+                        if (getmachines == newMachine->machine[i]) {
+                            printf("Máquina já existente!, Terá de reiniciar esta operação!\n");
+                            last_id = x;
+                            x = -1;
+                            _res = True;
+                            break;
+                        }
+                        else
+                        {
+                            _res = False;
+                         /*   last_id = x;*/
+                        }
+                    }
+                }
+
+                if (_res != True)
+                {
+                    newMachine->machine[x] = getmachines;
+                    printf("Qual o tempo de ciclo %d ?\n", x + 1);
+                    scanf("%d", &getcycletime);
+                    newMachine->cycletime[x] = getcycletime;
+                    newMachine->next = newop;
+                    temp = newMachine;
+                }
         }
 
         printf("Operacao criada com sucesso!\n");
@@ -95,7 +123,7 @@ struct Machine* CreateMachineOnFirstTime(Operation *newop)
 struct Machine* CreateMachineOnInit(Operation *newop)
 {
     Operation *aux,  *newMachine = (Operation*)malloc(sizeof(Operation));
-
+    Operation* temp = newop;
     if (newMachine != NULL) {
 
         int getmachines, getcycletime;
@@ -116,17 +144,56 @@ struct Machine* CreateMachineOnInit(Operation *newop)
         newMachine->numberofmachines = MachinesPerOp;
         newMachine->operation = 1;
 
+        bool _res = False;
+        int last_id = 0;
         for (int x = 0; x < MachinesPerOp; x++) {
-
+            if (last_id != x && _res == True)
+            {
+                continue;
+            }
             printf("Qual a maquina associada %d ?\n", x + 1);
             scanf("%d", &getmachines);
             if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
-            newMachine->machine[x] = getmachines;
-            printf("Qual o tempo de ciclo %d ?\n", x + 1);
-            scanf("%d", &getcycletime);
-            newMachine->cycletime[x] = getcycletime;
-            newMachine->next = newop;
+
+            if (temp != NULL) {
+                for (int i = 0; i < x; i++) {
+                    if (getmachines == newMachine->machine[i]) {
+                        printf("Máquina já existente!, Terá de reiniciar esta operação!\n");
+                        last_id = x;
+                        x = -1;
+                        _res = True;
+                        break;
+                    }
+                    else
+                    {
+                        _res = False;
+                        /*   last_id = x;*/
+                    }
+                }
+            }
+
+            if (_res != True)
+            {
+                newMachine->machine[x] = getmachines;
+                printf("Qual o tempo de ciclo %d ?\n", x + 1);
+                scanf("%d", &getcycletime);
+                newMachine->cycletime[x] = getcycletime;
+                newMachine->next = newop;
+                temp = newMachine;
+            }
         }
+
+        //for (int x = 0; x < MachinesPerOp; x++) {
+
+        //    printf("Qual a maquina associada %d ?\n", x + 1);
+        //    scanf("%d", &getmachines);
+        //    if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+        //    newMachine->machine[x] = getmachines;
+        //    printf("Qual o tempo de ciclo %d ?\n", x + 1);
+        //    scanf("%d", &getcycletime);
+        //    newMachine->cycletime[x] = getcycletime;
+        //    newMachine->next = newop;
+        //}
 
         printf("Operacao criada com sucesso!\n");
         int counter = 0;
@@ -155,6 +222,8 @@ struct Machine* CreateMachineOnInit(Operation *newop)
 
 struct Machine* insertAtMid(Operation* newMachine, int pos)
 {
+   
+
     if (newMachine != NULL) {
 
         if (pos == 0)
@@ -163,7 +232,7 @@ struct Machine* insertAtMid(Operation* newMachine, int pos)
         }
          
         else {
-
+            Operation* temp = newMachine;
             int getmachines, getcycletime;
             int MachinesPerOp, counter = 1, position = pos;
 
@@ -192,20 +261,59 @@ struct Machine* insertAtMid(Operation* newMachine, int pos)
                 pos--;
      
             }
+            bool _res = False;
+            int last_id = 0;
             for (int x = 0; x < MachinesPerOp; x++) {
+                if (last_id != x && _res == True)
+                {
+                    continue;
+                }
+                printf("Qual a maquina associada %d ?\n", x + 1);
+                scanf("%d", &getmachines);
+                if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+
+                if (temp != NULL) {
+                    for (int i = 0; i < x; i++) {
+                        if (getmachines == novo->machine[i]) {
+                            printf("Máquina já existente!, Terá de reiniciar esta operação!\n");
+                            last_id = x;
+                            x = -1;
+                            _res = True;
+                            break;
+                        }
+                        else
+                        {
+                            _res = False;
+                            /*   last_id = x;*/
+                        }
+                    }
+                }
+
+                if (_res != True)
+                {
+                    novo->machine[x] = getmachines;
+                    printf("Qual o tempo de ciclo %d ?\n", x + 1);
+                    scanf("%d", &getcycletime);
+                    novo->cycletime[x] = getcycletime;
+                    //newMachine->next = newMachine;
+                    temp = novo;
+                }
+            }
+
+            //for (int x = 0; x < MachinesPerOp; x++) {
        
-                 
-                  novo->operation = position+1;
-                  novo->numberofmachines = MachinesPerOp;
-                  printf("Qual a maquina associada %d ?\n", x + 1);
-                  scanf("%d", &getmachines);
-                  novo->machine[x] = getmachines;
-                  if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
-                  printf("Qual o tempo de ciclo %d ?\n", x + 1);
-                  scanf("%d", &getcycletime);
-                  novo->cycletime[x] = getcycletime;
-                 
-             }
+            //     
+            //      novo->operation = position+1;
+            //      novo->numberofmachines = MachinesPerOp;
+            //      printf("Qual a maquina associada %d ?\n", x + 1);
+            //      scanf("%d", &getmachines);
+            //      novo->machine[x] = getmachines;
+            //      if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+            //      printf("Qual o tempo de ciclo %d ?\n", x + 1);
+            //      scanf("%d", &getcycletime);
+            //      novo->cycletime[x] = getcycletime;
+            //     
+            // }
             proximo = proximo->next; // porque em cima posicao vem com -1 , logo fica desfasado .. o ciclo while nao coloca a apontar para a op correta..logo faço +1 next!
             novo->next = proximo;
             while (proximo !=NULL)
@@ -228,6 +336,7 @@ struct Machine* CreateMachineOnEnd(Operation *newMachine,  int* index)
 {
     setlocale(LC_ALL, "portuguese");// caracteres portugues aceites
     Operation* aux = newMachine, *novo = (Operation*)malloc(sizeof(Operation));
+    Operation* temp = newMachine;
     if (novo != NULL)
     {
         if (aux == NULL) return(CreateMachineOnFirstTime(aux));
@@ -252,19 +361,57 @@ struct Machine* CreateMachineOnEnd(Operation *newMachine,  int* index)
             novo->operation = (int*)malloc(1 * sizeof(int));//ocupar memoria para o nr de elementos que o utilizador pretende
             novo->numberofmachines = MachinesPerOp;
             novo->operation = *index + 1;
-
+            bool _res = False;
+            int last_id = 0;
             for (int x = 0; x < MachinesPerOp; x++) {
-
+                if (last_id != x && _res == True)
+                {
+                    continue;
+                }
                 printf("Qual a maquina associada %d ?\n", x + 1);
                 scanf("%d", &getmachines);
                 if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
-                novo->machine[x] = getmachines;
 
-                printf("Qual o tempo de ciclo %d ?\n", x + 1);
-                scanf("%d", &getcycletime);
-                novo->cycletime[x] = getcycletime;
-               
+                if (temp != NULL) {
+                    for (int i = 0; i < x; i++) {
+                        if (getmachines == novo->machine[i]) {
+                            printf("Máquina já existente!, Terá de reiniciar esta operação!\n");
+                            last_id = x;
+                            x = -1;
+                            _res = True;
+                            break;
+                        }
+                        else
+                        {
+                            _res = False;
+                            /*   last_id = x;*/
+                        }
+                    }
+                }
+
+                if (_res != True)
+                {
+                    novo->machine[x] = getmachines;
+                    printf("Qual o tempo de ciclo %d ?\n", x + 1);
+                    scanf("%d", &getcycletime);
+                    novo->cycletime[x] = getcycletime;
+                    //novo->next = newMachine;
+                    temp = novo;
+                }
             }
+
+            //for (int x = 0; x < MachinesPerOp; x++) {
+
+            //    printf("Qual a maquina associada %d ?\n", x + 1);
+            //    scanf("%d", &getmachines);
+            //    if (getmachines > 8 || getmachines == 0) return NULL;//SO PERMITE 8 MÁQUINAS!!!!!!
+            //    novo->machine[x] = getmachines;
+
+            //    printf("Qual o tempo de ciclo %d ?\n", x + 1);
+            //    scanf("%d", &getcycletime);
+            //    novo->cycletime[x] = getcycletime;
+            //   
+            //}
 
             novo->next = NULL;
             aux->next = novo;
@@ -277,7 +424,7 @@ struct Machine* CreateMachineOnEnd(Operation *newMachine,  int* index)
     else {
     printf("Alocacao de uma nova operacao falhou!!\n");
     return NULL;
-}
+    }
 }
 
 struct Machine* RemoveAList(Operation *newMachine, int pos)
