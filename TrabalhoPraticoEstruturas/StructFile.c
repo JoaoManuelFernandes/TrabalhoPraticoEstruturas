@@ -219,7 +219,6 @@ struct Machine* CreateMachineOnInit(Operation *newop)
 }  
 // para quando já existe uma estrutura  , enquanto a outra é para uma estrutura nula!
 
-
 struct Machine* insertAtMid(Operation* newMachine, int pos)
 {
    
@@ -263,6 +262,8 @@ struct Machine* insertAtMid(Operation* newMachine, int pos)
             }
             bool _res = False;
             int last_id = 0;
+            novo->operation = position+1;
+            novo->numberofmachines = MachinesPerOp;
             for (int x = 0; x < MachinesPerOp; x++) {
                 if (last_id != x && _res == True)
                 {
@@ -274,7 +275,7 @@ struct Machine* insertAtMid(Operation* newMachine, int pos)
 
                 if (temp != NULL) {
                     for (int i = 0; i < x; i++) {
-                        if (getmachines == novo->machine[i]) {
+                        if (getmachines == temp->machine[i]) {
                             printf("Máquina já existente!, Terá de reiniciar esta operação!\n");
                             last_id = x;
                             x = -1;
